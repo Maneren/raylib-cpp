@@ -15,8 +15,7 @@ namespace raylib {
  */
 class Matrix : public ::Matrix {
 public:
-    Matrix(const ::Matrix& mat)
-        : ::Matrix(mat) {
+    Matrix(const ::Matrix& mat) : ::Matrix(mat) {
         // Nothing.
     }
 
@@ -72,14 +71,14 @@ public:
         return *this;
     }
 
-    bool operator==(const ::Matrix& other) {
+    bool operator==(const ::Matrix& other) const {
         return m0 == other.m0 && m1 == other.m1 && m2 == other.m2 && m3 == other.m3 && m4 == other.m4 &&
                m5 == other.m5 && m6 == other.m6 && m7 == other.m7 && m8 == other.m8 && m9 == other.m9 &&
                m10 == other.m10 && m11 == other.m11 && m12 == other.m12 && m13 == other.m13 && m14 == other.m14 &&
                m15 == other.m15;
     }
 
-    bool operator!=(const ::Matrix& other) { return !(*this == other); }
+    bool operator!=(const ::Matrix& other) const { return !(*this == other); }
 
 #ifndef RAYLIB_CPP_NO_MATH
     /**
@@ -96,13 +95,13 @@ public:
 
     static Matrix Identity() { return ::MatrixIdentity(); }
 
-    Matrix Add(const ::Matrix& right) { return ::MatrixAdd(*this, right); }
+    [[nodiscard]] Matrix Add(const ::Matrix& right) const { return ::MatrixAdd(*this, right); }
 
-    Matrix operator+(const ::Matrix& matrix) { return ::MatrixAdd(*this, matrix); }
+    Matrix operator+(const ::Matrix& matrix) const { return ::MatrixAdd(*this, matrix); }
 
-    Matrix Subtract(const ::Matrix& right) { return ::MatrixSubtract(*this, right); }
+    [[nodiscard]] Matrix Subtract(const ::Matrix& right) const { return ::MatrixSubtract(*this, right); }
 
-    Matrix operator-(const ::Matrix& matrix) { return ::MatrixSubtract(*this, matrix); }
+    Matrix operator-(const ::Matrix& matrix) const { return ::MatrixSubtract(*this, matrix); }
 
     static Matrix Translate(float x, float y, float z) { return ::MatrixTranslate(x, y, z); }
 
@@ -120,7 +119,7 @@ public:
 
     [[nodiscard]] Matrix Multiply(const ::Matrix& right) const { return ::MatrixMultiply(*this, right); }
 
-    Matrix operator*(const ::Matrix& matrix) { return ::MatrixMultiply(*this, matrix); }
+    Matrix operator*(const ::Matrix& matrix) const { return ::MatrixMultiply(*this, matrix); }
 
     static Matrix Frustum(double left, double right, double bottom, double top, double near, double far) {
         return ::MatrixFrustum(left, right, bottom, top, near, far);
@@ -138,7 +137,7 @@ public:
 
     [[nodiscard]] float16 ToFloatV() const { return ::MatrixToFloatV(*this); }
 
-    operator float16() const { return ToFloatV(); }
+    explicit operator float16() const { return ToFloatV(); }
 
     /**
      * Set shader uniform value (matrix 4x4)
